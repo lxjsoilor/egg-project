@@ -9,8 +9,9 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
+
    const { INTEGER, DATE, STRING } = Sequelize;
-   await queryInterface.update('myUsers', {
+   await queryInterface.createTable('myUsers', {
      id: {
        type: INTEGER,
        primaryKey: true,

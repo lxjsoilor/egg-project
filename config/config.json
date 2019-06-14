@@ -3,7 +3,7 @@
     "username": "root",
     "password": "root",
     "port": "3306",
-    "database": "weapp-vue-eggjs-shop-demo",
+    "database": "sail-egg-demo",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
@@ -11,7 +11,7 @@
     "username": "root",
     "password": "root",
     "port": "3306",
-    "database": "weapp-vue-eggjs-shop-demo",
+    "database": "sail-egg-demo",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
@@ -19,7 +19,7 @@
     "username": "root",
     "password": "root",
     "port": "3306",
-    "database": "weapp-vue-eggjs-shop-demo",
+    "database": "sail-egg-demo",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }

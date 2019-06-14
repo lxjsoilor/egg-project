@@ -55,6 +55,7 @@ module.exports = () => {
             await next();
         }catch (err) {
             const status = err.status || 500;
+            console.log({err});
             const errorMessage = err || '系统内部异常';
             ctx.body = {
                 code: status,

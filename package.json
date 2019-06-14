@@ -14,8 +14,11 @@
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^5.0.0",
     "egg-session-redis": "^2.1.0",
+    "fecha": "^3.0.3",
     "lodash": "^4.17.11",
-    "mysql2": "^1.6.5"
+    "md5": "^2.2.1",
+    "mysql2": "^1.6.5",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "autod": "^3.0.1",

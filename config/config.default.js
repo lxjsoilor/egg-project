@@ -34,7 +34,7 @@ module.exports = appInfo => {
   config.sequelize = {
     dialect: 'mysql',
     host: '127.0.0.1',
-    database: 'weapp-vue-eggjs-shop-demo',
+    database: 'sail-egg-demo',
     port: '3306',
     username: 'root',
     password: 'root',
