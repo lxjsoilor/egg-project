@@ -1,41 +1,42 @@
 {
-  "name": "first",
+  "name": "app-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "app server",
   "private": true,
-  "egg": {
-    "declarations": true
-  },
   "dependencies": {
-    "egg": "^2.15.1",
+    "egg": "^2.22.1",
     "egg-jwt": "^3.1.6",
+    "egg-mysql": "^3.0.0",
     "egg-passport": "^2.0.1",
     "egg-redis": "^2.3.2",
     "egg-scripts": "^2.11.0",
-    "egg-sequelize": "^5.0.0",
+    "egg-sequelize": "^4.3.1",
     "egg-session-redis": "^2.1.0",
+    "egg-validate": "^2.0.2",
     "fecha": "^3.0.3",
     "lodash": "^4.17.11",
     "md5": "^2.2.1",
     "mysql2": "^1.6.5",
+    "passport-local": "^1.0.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "autod": "^3.0.1",
+    "autod": "^3.1.0",
     "autod-egg": "^1.1.0",
-    "egg-bin": "^4.11.0",
+    "egg-bin": "^4.13.1",
     "egg-ci": "^1.11.0",
-    "egg-mock": "^3.21.0",
-    "eslint": "^5.13.0",
-    "eslint-config-egg": "^7.1.0",
-    "sequelize-cli": "^5.4.0"
+    "egg-mock": "^3.22.2",
+    "eslint": "^5.16.0",
+    "eslint-config-egg": "^7.3.1",
+    "sequelize-cli": "^5.4.0",
+    "webstorm-disable-index": "^1.2.0"
   },
   "engines": {
-    "node": ">=10.0.0"
+    "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-first",
-    "stop": "egg-scripts stop --title=egg-server-first",
+    "start": "egg-scripts start --daemon --title=egg-server-app-server",
+    "stop": "egg-scripts stop --title=egg-server-app-server",
     "dev": "egg-bin dev",
     "debug": "egg-bin debug",
     "test": "npm run lint -- --fix && npm run test-local",
@@ -43,15 +44,20 @@
     "cov": "egg-bin cov",
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
-    "autod": "autod"
+    "autod": "autod",
+    "sql": "node ./sql/index.js",
+    "db:init": "npx sequelize migration:generate --name",
+    "db:up": "npx sequelize db:migrate",
+    "db:down": "npx sequelize db:migrate:undo",
+    "db:down-all": "npx sequelize db:migrate:undo:all"
   },
   "ci": {
-    "version": "10"
+    "version": "8"
   },
   "repository": {
     "type": "git",
     "url": ""
   },
-  "author": "",
+  "author": "ruiyong.lee@gmail.com",
   "license": "MIT"
 }

@@ -1,17 +1,22 @@
 'use strict';
 
 /**
- * @param {Egg.Application} app - egg application
+ * 路由
+ * @param {Egg.Application} app - 当前应用的实例
+ * @author ruiyong-lee
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { goodsCategory, user } = controller;
+  // const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType } = controller;
+  const { helloworld, uac } = controller;
+  
+  router.post('/helloworld/test', helloworld.test);
 
-  router.get('/', controller.home.index);
+  // 用户登录
+  router.post('/uac/auth/login', uac.auth.login);
+  // 用户注册
+  router.post('/uac/auth/register', uac.auth.register);
+  // 添加角色
+  router.post('/uac/auth/updateRole', uac.auth.updateRole2);
 
-  // 商品类别
-  router.post('/goodsCategory/saveNew', goodsCategory.saveNew)
-
-  // 管理后台用户登录
-  router.post('/user/login', user.admin.login)
 };

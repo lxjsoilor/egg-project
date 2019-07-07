@@ -1,67 +1,50 @@
+'use strict';
+
 /**
  * Controller 和 Service 抛出异常处理
  * @author ruiyong-lee
  * @return {function} function
  */
 module.exports = () => {
-//   return async function errorHandler(ctx, next) {
-//     let transaction;
-//     try {
-//       await next();
+  return async function errorHandler(ctx, next) {
+    let transaction;
+    try {
+      await next();
 
-//       transaction = await ctx.app.transition();
+      transaction = await ctx.app.transition();
 
-//       // 如果有事务自动提交
-//       if (transaction) {
-//         transaction.commit();
-//         ctx.app.deleteTransition();
-//       }
-//     } catch (err) {
-//       // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
-//       ctx.app.emit('error', err, ctx);
+      // 如果有事务自动提交
+      if (transaction) {
+        transaction.commit();
+        ctx.app.deleteTransition();
+      }
+    } catch (err) {
+      // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
+      ctx.app.emit('error', err, ctx);
 
-//       const status = err.status || 500;
+      const status = err.status || 500;
 
-//       // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
-//       const error = status === 500 && ctx.app.config.env === 'prod'
-//         ? '系统内部错误'
-//         : err.message;
+      // 生产环境时 500 错误的详细错误内容不返回给客户端，因为可能包含敏感信息
+      const error = status === 500 && ctx.app.config.env === 'prod'
+        ? '系统内部错误'
+        : err.message + '这是什么鬼';
 
-//       // 从 error 对象上读出各个属性，设置到响应中
-//       ctx.body = {
-//         code: ctx.ERROR_CODE,
-//         message: error,
-//       };
+      // 从 error 对象上读出各个属性，设置到响应中
+      ctx.body = {
+        code: ctx.ERROR_CODE,
+        message: error,
+      };
 
-//       if (status === 422) {
-//         ctx.body.detail = err.errors;
-//       }
-//       ctx.status = status;
+      if (status === 422) {
+        ctx.body.detail = err.errors;
+      }
+      ctx.status = status;
 
-//       // 如果有事务自动回滚
-//       if (transaction) {
-//         transaction.rollback();
-//         ctx.app.deleteTransition();
-//       }
-//     }
-//   };
-
-    return async function errorHandler(ctx, next) {
-        try {
-            ctx.logger.debug('debug-------------------');
-            ctx.logger.info('info-------------------');
-            ctx.logger.warn('warn-------------------');
-            ctx.logger.error('error-------------------');
-            await next();
-        }catch (err) {
-            const status = err.status || 500;
-            console.log({err});
-            const errorMessage = err || '系统内部异常';
-            ctx.body = {
-                code: status,
-                message: errorMessage
-            };
-            ctx.status = status;
-        }
+      // 如果有事务自动回滚
+      if (transaction) {
+        transaction.rollback();
+        ctx.app.deleteTransition();
+      }
     }
+  };
 };

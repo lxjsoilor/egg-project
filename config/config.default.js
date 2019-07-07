@@ -1,67 +1,51 @@
-/* eslint valid-jsdoc: "off" */
-
 'use strict';
 
-/**
- * @param {Egg.EggAppInfo} appInfo app info
- */
 module.exports = appInfo => {
-  /**
-   * built-in config
-   * @type {Egg.EggAppConfig}
-   **/
-  const config = exports = {};
+  const config = {};
 
   // use for cookie sign key, should change to your own and keep security
-  config.keys = appInfo.name + '_1560126065337_8620';
+  config.keys = appInfo.name + '_1523515826308_192';
 
-  // add your middleware config here
-  config.middleware = [];
-
-  // add your user config here
-  const userConfig = {
-    // myAppName: 'egg',
+  // 小程序只能存storage，关闭csrf
+  config.security = {
+    csrf: {
+      enable: false,
+    },
   };
 
-  config.cluster = {
-    listen: {
-      path: '',
-      port: 7002,
-      hostname: 'localhost'
-    }
+  // 数据库
+  config.mysql = {
+    client: {
+      host: '127.0.0.1',
+      // 端口号
+      port: '3306',
+      // 用户名
+      user: 'root',
+      // 密码
+      password: 'root',
+      // 数据库名
+      database: 'tsbeer_db',
+    },
+    // 所有数据库配置的默认值
+    default: {},
+
+    // 是否加载到 app 上，默认开启
+    app: true,
+    // 是否加载到 agent 上，默认关闭
+    agent: false,
   };
 
   config.sequelize = {
-    dialect: 'mysql',
+    dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
+    database: 'tsbeer_db',
     host: '127.0.0.1',
-    database: 'sail-egg-demo',
     port: '3306',
     username: 'root',
     password: 'root',
-    timezone: '+08:00'
+    timezone: '+08:00',
   };
 
-  config.sessionRedis = {
-    key: "EGG_SESSION",
-    maxAge: 1800 * 1000, // 1 天
-    httpOnly: true,
-    encrypt: false
-  };
-
-  config.middleware = ['errorHandler'];
-
-  config.jwt = {
-    secret: 'sailor'
-  };
-
-  config.session = {
-    key: 'SAILOR_KEY',
-    maxAge: 1000 * 60,
-    httpOnly: true,
-    encrypt: true,
-    renew: true
-  }
-
+  // redis
   config.redis = {
     clients: {
       default: {
@@ -69,19 +53,40 @@ module.exports = appInfo => {
         port: '6379',
         password: '',
         db: '0',
-      }
+      },
+      subscribe: {
+        host: 'localhost',
+        port: '6379',
+        password: '',
+        db: '1',
+      },
+      session: {
+        host: 'localhost',
+        port: '6379',
+        password: '',
+        db: '2',
+      },
     },
-    agent: true
+    agent: true, 
   };
 
-  exports.security = {
-    csrf: {
-      enable: false,
-    },
+  exports.sessionRedis = {
+    name: 'session', // specific instance `session` as the session store
   };
 
-  return {
-    ...config,
-    ...userConfig,
+  // jwt
+  exports.jwt = {
+    secret: '123456',
+    // ignore: '/weapp',
   };
+
+  // 文件上传 File 模式
+  // exports.multipart = {
+  //   mode: 'file',
+  // };
+
+  // 中间件
+  config.middleware = ['auth', 'errorHandler'];
+
+  return config;
 };
