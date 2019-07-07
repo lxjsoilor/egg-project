@@ -60,18 +60,104 @@ class UacController extends Controller {
         }
     }
   };
-  async updateRole2() {
+  async updateRoleByUserUuid() {
     const { ctx, app } = this;
     const { roleTypeIdArr, userUuid } = ctx.request.body;
     if(app._.isEmpty(roleTypeIdArr)) {
-        this.fail(300, '角色ID不能为空')
+      this.fail(300, '角色ID不能为空')
+    }else if(app._.isEmpty(userUuid)){
+      this.fail(300, '用户ID不能为空')
     }else {
-        ctx.service.uac.auth.updateRole({
+        const result = await ctx.service.uac.auth.updateRoleByUserUuid({
             userUuid,
             roleTypeIdArr
         });
+        this.success(result);
     }
+  };
+  async addRole() {
+    const { ctx, app } = this;
+    const { roleName } = ctx.request.body;
+    if(app._.isEmpty(roleName)) {
+      this.fail('角色名称不能为空')
+    }else {
+      try {
+        const result = await ctx.service.uac.auth.addRole({
+          roleName
+        });
+        this.success(result);
+      }catch (err) {
+        if(err.name === 'SequelizeUniqueConstraintError') {
+          this.fail(300, '角色名称已经存在');
+        }else {
+          throw new Error(err);
+        }
+      }
+    }
+  };
+  async delRoleByUuid() {
+    const { ctx, app } = this;
+    const { uuid } = ctx.request.body;
+    const defaultUuid = ['1000', '1001', '1002'];
+    if(app._.isEmpty(uuid)) {
+      this.fail(300, '角色UUID不能为空');
+    }else if(defaultUuid.includes(uuid)) {
+      this.fail(300, '系统默认角色无法删除');
+    }else {
+      const result = await ctx.service.uac.auth.delRoleByUuid({
+        uuid
+      })
+      if(result > 0) {
+        this.success('删除成功')
+      }else {
+        this.fail(300, '删除失败，请重试')
+      }
+    }
+  };
+  async updateRoleByUuid() {
+    const { ctx, app } = this;
+    const { uuid, roleName } = ctx.request.body;
+    if(app._.isEmpty(uuid)) {
+      this.fail(300, '角色UUID不能为空')
+    }else {
+      try {
+        const result = await ctx.service.uac.auth.updateRoleByUuid({
+          uuid,
+          roleName
+        });
+        if(result > 0) {
+          this.success('修改成功')
+        }else {
+          this.fail(300, '修改失败，请重试')
+        }
+      }catch (err) {
+        if(err.name === 'SequelizeUniqueConstraintError') {
+          this.fail(300, '角色名称已经存在');
+        }else {
+          throw new Error(err);
+        }        
+      }
+    }
+  };
+  async queryAllRole() {
+    const { ctx, app } = this;
+    const result = await ctx.service.uac.auth.queryAllRole();
+    this.success(result);
+  };
+
+  async queryUserByCondition() {
+    const { ctx, app } = this;
+    let { pageNum, pageSize } = ctx.request.body;
+    pageNum = pageNum || 1;
+    pageSize = pageSize || 10;
+    const result = await ctx.service.uac.auth.queryUserByCondition({
+      ...ctx.request.body,
+      pageNum,
+      pageSize
+    })
+    this.success(result);
   }
+  
 }
 
 module.exports = UacController;

@@ -16,7 +16,17 @@ module.exports = app => {
   router.post('/uac/auth/login', uac.auth.login);
   // 用户注册
   router.post('/uac/auth/register', uac.auth.register);
+  // 为指定用户添加角色
+  router.post('/uac/auth/updateRoleByUserUuid', uac.auth.updateRoleByUserUuid);
   // 添加角色
-  router.post('/uac/auth/updateRole', uac.auth.updateRole2);
-
+  router.post('/uac/auth/addRole', uac.auth.addRole);
+  // 删除角色
+  router.post('/uac/auth/delRoleByUuid', uac.auth.delRoleByUuid);
+  // 改角色
+  router.post('/uac/auth/updateRoleByUuid', uac.auth.updateRoleByUuid);
+  // 获取所有的角色
+  router.post('/uac/auth/queryAllRole', uac.auth.queryAllRole);
+  // 分页获取用户
+  router.post('/uac/auth/queryUserByCondition', uac.auth.queryUserByCondition);
+  
 };

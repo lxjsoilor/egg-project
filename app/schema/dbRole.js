@@ -18,7 +18,8 @@ module.exports = app => {
     roleTypeId: {
         type: BIGINT,
         allowNull: false,
-        unique: true
+        unique: true,
+        autoIncrement: true
     }
   };
 };

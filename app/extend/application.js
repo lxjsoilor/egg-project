@@ -34,6 +34,8 @@ module.exports = {
       creatorName,
       lastModifierId: creatorId,
       lastModifierName: creatorName,
+      createdTime: new Date(),
+      lastModifiedTime: new Date()
     };
   },
   // modify所需的一些公共字段

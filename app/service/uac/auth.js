@@ -18,11 +18,10 @@ class HelloworldService extends Service {
   async register(params = {}) {
       const { app } = this;
       const crateInfo = app.getCrateInfo('system', 'system');
-      const transaction = await app.transition();
       const uuid = await app.model.Uac.Auth.createUser({
           ...params,
           ...crateInfo
-      }, transaction);
+      });
       if(!app._.isEmpty(uuid)) {
         await app.model.Uac.Auth.crateUserMapRole({
             ...crateInfo,
@@ -30,26 +29,82 @@ class HelloworldService extends Service {
             roleUuid: '1002',
             roleName: '普通用户',
             roleTypeId: 3
-        }, transaction);
+        });
         return uuid;
       }else {
         return null;
       }
   };
-  async updateRole(params = {}) {
+  async updateRoleByUserUuid(params = {}) {
     const { app } = this;
-    let { roleTypeIdArr } = ctx.request.body;
+    let { roleTypeIdArr, userUuid } = params;
     if(roleTypeIdArr.indexOf('1000') >= 0) {
-        roleTypeIdArr.splice(roleTypeIdArr.indexOf('1000'), 1);
+      roleTypeIdArr.splice(roleTypeIdArr.indexOf('1000'), 1);
     }
     if(roleTypeIdArr.indexOf('1002') < 0) {
-        roleTypeIdArr.push('1002')
+      roleTypeIdArr.push('1002')
     }
-    const crateInfo = app.getCrateInfo('system', 'system');
-    await app.model.Uac.Auth.updateRole({
-        ...params,
+    // 检查该用户是否存在
+    const userCount = await app.model.Uac.Auth.getUserCount({ uuid: userUuid });
+    if(userCount <=0 ) {
+      throw new Error('该用户不存在')
+    }else {
+      const crateInfo = app.getCrateInfo('system', 'system');
+      return await app.model.Uac.Auth.updateRoleByUserUuid({
+        userUuid,
+        roleTypeIdArr,
         crateInfo
+      })
+    }
+  };
+
+  async addRole(params) {
+    const { app } = this;
+    const crateInfo = app.getCrateInfo('system', 'system');
+    return await app.model.Uac.Auth.addRole({
+      ...params,
+      ...crateInfo
+    });
+  };
+
+  async delRoleByUuid(params) {
+    const { app } = this;
+    const userCount = await app.model.Uac.Auth.getRoleCountAtUser({ roleUuid: params.uuid });
+    if(userCount > 0) {
+      throw new Error('该角色有绑定的用户，不能删除');
+    }else {
+      return await app.model.Uac.Auth.delRoleByUuid({
+        ...params
+      })
+    }
+  };
+
+  async updateRoleByUuid(params) {
+    const { app } = this;
+    // const roleCount = await app.model.Uac.Auth.getRoleCount({
+    //   roleName: params.roleName,
+    //   uuid: params.uuid
+    // });
+    // if(roleCount > 0 ) {
+    //   throw new Error('该角色名称已经存在');
+    // }
+
+    return await app.model.Uac.Auth.updateRoleByUuid({
+      ...params
     })
+  };
+
+  async queryAllRole(params={}) {
+    const { app } = this;
+    return await app.model.Uac.Auth.queryAllRole({})
+  };
+
+  async queryUserByCondition(params={}) {
+    const { app } = this;
+    return await app.model.Uac.Auth.queryUserByCondition({
+      ...params,
+      attributes: ['uuid', 'name', 'userName', 'userType']
+    });
   }
 }
 
