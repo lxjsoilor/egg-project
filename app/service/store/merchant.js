@@ -54,7 +54,10 @@ class HelloworldService extends Service {
   };
 
   async updateMerchant(params = {}) {
-    
+    const { app } = this;
+    return await app.model.Store.Merchant.updateMerchant({
+      ...params
+    })
   }
 }
 

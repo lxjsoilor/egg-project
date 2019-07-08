@@ -10,8 +10,6 @@
 
 - **Mysql：** v5.5.51
 
-- **Redis：** v3.2.0  需要打开配置：notify-keyspace-events Ex
-
 ## 本地开发（windows）
 
 1、安装Node.js：[Node.js安装配置](https://www.runoob.com/nodejs/nodejs-install-setup.html)

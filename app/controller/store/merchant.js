@@ -42,9 +42,19 @@ class MerchantController extends Controller {
   };
 
   async updateMerchant() {
-    this.success('updateMerchant')
-    const { ctx } = this;
-    return await ctx.service.store.merchant.updateMerchant(ctx.request.body);
+    const { ctx, app } = this;
+    const { uuid, merchantData } = ctx.request.body;
+    if(app._.isEmpty(uuid)) {
+      this.fail(300, '店铺uuid不能为空')
+    }else if(app._.isEmpty(merchantData)) {
+      this.fail(300, '需要更新的数据不能为空')
+    }else {
+      const result = await ctx.service.store.merchant.updateMerchant({
+        uuid,
+        merchantData
+      });
+      this.success(result)
+    }
   }
 }
 

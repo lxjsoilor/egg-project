@@ -50,6 +50,18 @@ module.exports = app => {
       }
     });
     return result;
+  };
+
+  Merchant.updateMerchant = async ({uuid, merchantData}) => {
+    const result = await Merchant.update({
+      ...merchantData
+    }, {
+      where: {
+        uuid
+      }
+    })
+    console.log(result);
+    return result;
   }
 
 
