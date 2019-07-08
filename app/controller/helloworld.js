@@ -5,7 +5,7 @@ const Controller = require('../core/base_controller');
 /**
  * Controller - goods
  * @class
- * @author ruiyong-lee
+ * @author linxiongjun
  */
 class HelloworldController extends Controller {
   /**

@@ -16,7 +16,7 @@ module.exports = app => {
   });
 
   // 关系
-  dbUser.hasMany(dbUser_Role, { foreignkey: 'userUuid' })   
+  dbUser.hasMany(dbUser_Role, { foreignKey: 'userUuid' })   
   /**
    * 新增商品
    * @param {object} goods - 条件
@@ -121,6 +121,15 @@ module.exports = app => {
     return result;
   }
 
+  dbUser.delUserRoleByUuid = async params => {
+    const result = await dbUser_Role.destroy({
+      where: {
+        ...params
+      }
+    });
+    return result;
+  }
+
   dbUser.getRoleCountAtUser = async params => {
     const result = await dbUser_Role.count({
       where: {
@@ -160,14 +169,46 @@ module.exports = app => {
       include: [
         {
           model: dbUser_Role,
-          foreignkey: 'userUuid',
+          foreignKey: 'userUuid',
+          attributes: ['uuid', 'userUuid', 'roleUuid', 'roleName', 'roleTypeId']
         }
       ],
     };
     const result = await dbUser.findAndCountAll(condition);
-    console.log(result)
+    result.pages = Math.ceil(result.count/pageSize || 0);
     return result;
   }
+
+  dbUser.delUserByUuid = async params => {
+    const result = await dbUser.destroy({
+      where: {
+        ...params
+      }
+    })
+    return result;
+  }
+
+  dbUser.updateUserByUuid = async params => {
+    const { uuid, updateInfo } = params;
+    const result = await dbUser.update({
+      ...updateInfo
+    }, {
+      where: {
+        uuid
+      }
+    });
+    return result;
+  }
+
+  dbUser.checkUserPassword = async params => {
+    const result = await dbUser.findOne({
+      where: {
+        ...params
+      }
+    })
+    return result;
+  }
+
 
   return dbUser;
 };

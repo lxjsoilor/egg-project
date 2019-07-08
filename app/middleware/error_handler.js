@@ -2,7 +2,7 @@
 
 /**
  * Controller 和 Service 抛出异常处理
- * @author ruiyong-lee
+ * @author linxiongjun
  * @return {function} function
  */
 module.exports = () => {

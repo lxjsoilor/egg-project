@@ -1,22 +1,18 @@
 'use strict';
-
+const md5 = require('md5');
 const Service = require('egg').Service;
-
-/**
- * Service - 商品
- * @class
- * @author linxiongjun
- */
 class HelloworldService extends Service {
   /**
    * 新增商品
    * @param {object} params - 条件
    * @return {string} - 商品uuid
    */
-  async test(params = {}) {
+  async createMerchant(params = {}) {
     const { app } = this;
-    return await app.model.Helloworld.test({...params,version:2});
-  }
+    return await app.model.Store.Merchant.createMerchant({
+      ...params
+    });
+  };
 }
 
 module.exports = HelloworldService;

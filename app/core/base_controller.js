@@ -5,7 +5,7 @@ const { Controller } = require('egg');
 /**
  * BaseController
  * @class
- * @author ruiyong-lee
+ * @author linxiongjun
  */
 class BaseController extends Controller {
   get user() {

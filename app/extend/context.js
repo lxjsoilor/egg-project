@@ -40,7 +40,6 @@ module.exports = {
     const userUuid = this.cookies.get('userUuid', { signed: false });
     const userName = this.cookies.get('userName', { signed: false });
     const userType = this.cookies.get('userType', { signed: false });
-    const orgUuid = this.cookies.get('orgUuid', { signed: false });
     const token = this.getAccessToken(this);
     const verifyResult = await new Promise(resolve => {
       app.jwt.verify(token, app.config.jwt.secret, (err, decoded) => {
@@ -65,10 +64,9 @@ module.exports = {
       this.verifyFail(401, '用户 UUID 与 Token 不一致');
       return false;
     }
-    // this.request.body.userUuid = userUuid;
-    // this.request.body.userName = userName;
-    // this.request.body.userType = userType;
-    // this.request.body.orgUuid = orgUuid;
+    this.request.body.presentUserUuid = userUuid;
+    this.request.body.presentUserName = userName;
+    this.request.body.presentUserType = userType;
     // 将get请求的ctx.query合并到ctx.request.body
     this.request.body = { ...this.request.body, ...this.query };
     return true;

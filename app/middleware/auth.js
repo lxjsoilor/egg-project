@@ -4,7 +4,7 @@
  * 判断是否登录
  * @param {object} options - 中间件的配置项
  * @param {Egg.Application} app - 当前应用的实例
- * @author ruiyong-lee
+ * @author linxiongjun
  * @return {null} null
  */
 module.exports = (options, app) => {

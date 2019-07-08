@@ -5,7 +5,7 @@ const Controller = require('../../core/base_controller');
 /**
  * Controller - goods
  * @class
- * @author ruiyong-lee
+ * @author linxiongjun
  */
 class UacController extends Controller {
   async login() {
@@ -28,7 +28,7 @@ class UacController extends Controller {
                 userName,
                 userType,
                 roleList
-            })
+            });
             this.success('登陆成功')
         }
     }
@@ -156,7 +156,56 @@ class UacController extends Controller {
       pageSize
     })
     this.success(result);
+  };
+
+
+  async delUserByUuid() {
+    const { ctx, app } = this;
+    const { uuid } = ctx.request.body;
+    if(app._.isEmpty(uuid + '')) {
+      this.fail('用户UUID不能为空')
+    }else {
+      const result = await ctx.service.uac.auth.delUserByUuid({
+        uuid
+      });
+      if(result <= 0) {
+        this.fail('删除失败，请重试');
+      }else {
+        this.success('删除成功');
+      }
+    }
+  };
+
+  async updateUserByUuid() {
+    const { ctx } = this;
+    const { presentUserUuid, updateInfo } = ctx.request.body;
+    await ctx.service.uac.auth.updateUserByUuid({
+      updateInfo,
+      uuid: presentUserUuid
+    })
+    this.success('更新成功')
+  };
+
+  async updateUserPasswordByUuid() {
+    const { ctx, app } = this;
+    const { presentUserUuid, oldPassword, newPassword } = ctx.request.body;
+    if(app._.isEmpty(oldPassword)) {
+      this.fail(300, '旧密码不能为空')
+    }else if(app._.isEmpty(newPassword)) {
+      this.fail(300, '新密码不能为空')
+    }else if(newPassword == oldPassword){
+      this.fail(300, '新的密码不能和旧的密码一样')
+    }else {
+      await ctx.service.uac.auth.updateUserPasswordByUuid({
+        newPassword,
+        oldPassword,
+        uuid: presentUserUuid
+      })
+      this.success('密码修改成功');
+    }
+
   }
+  
   
 }
 

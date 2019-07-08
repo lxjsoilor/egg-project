@@ -3,12 +3,12 @@
 /**
  * 路由
  * @param {Egg.Application} app - 当前应用的实例
- * @author ruiyong-lee
+ * @author linxiongjun
  */
 module.exports = app => {
   const { router, controller } = app;
   // const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType } = controller;
-  const { helloworld, uac } = controller;
+  const { helloworld, uac, store } = controller;
   
   router.post('/helloworld/test', helloworld.test);
 
@@ -28,5 +28,13 @@ module.exports = app => {
   router.post('/uac/auth/queryAllRole', uac.auth.queryAllRole);
   // 分页获取用户
   router.post('/uac/auth/queryUserByCondition', uac.auth.queryUserByCondition);
-  
+  // 根据uuid删除用户
+  router.post('/uac/auth/delUserByUuid', uac.auth.delUserByUuid);
+  // 根据uuid更新用户
+  router.post('/uac/auth/updateUserByUuid', uac.auth.updateUserByUuid);
+  // 修改用户密码
+  router.post('/uac/auth/updateUserPasswordByUuid', uac.auth.updateUserPasswordByUuid);
+
+  // 新增门店
+  // router.post('/store/merchant/createMerchant', store.merchant.createMerchant);
 };

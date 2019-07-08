@@ -1,5 +1,5 @@
 'use strict';
-
+const md5 = require('md5');
 const Service = require('egg').Service;
 class HelloworldService extends Service {
   /**
@@ -105,6 +105,52 @@ class HelloworldService extends Service {
       ...params,
       attributes: ['uuid', 'name', 'userName', 'userType']
     });
+  };
+
+  async delUserByUuid(params = {}) {
+    const { app } = this;
+    const result = await app.model.Uac.Auth.delUserByUuid({
+      ...params
+    });
+    if(result <= 0) {
+      return result;
+    }else {
+      // 同时要删除关系表
+      const result2 = await app.model.Uac.Auth.delUserRoleByUuid({
+        userUuid: params.uuid
+      });
+      return result;
+    }
+  };
+
+  async updateUserByUuid(params = {}) {
+    const { app } = this;
+    const result = await app.model.Uac.Auth.updateUserByUuid({
+      ...params
+    });
+    return result;
+  };
+
+  async updateUserPasswordByUuid(params = {}) {
+    const { app } = this;
+    const { newPassword, oldPassword, uuid } = params;
+    // 判断原本的密码是否正确
+    const oldPasswordResult = await app.model.Uac.Auth.checkUserPassword({
+      password: md5(oldPassword),
+      uuid
+    });
+    if(app._.isEmpty(oldPasswordResult)) {
+      throw new Error('旧密码错误')
+    }else {
+      // 更改密码
+      const result = await app.model.Uac.Auth.updateUserByUuid({
+        uuid,
+        updateInfo: {
+          password: md5(newPassword)
+        }
+      })
+      return result;
+    }
   }
 }
 
