@@ -209,6 +209,19 @@ module.exports = app => {
     return result;
   }
 
+  dbUser.getUserByUserName = async params => {
+    const result = await dbUser.findOne({
+      where: {
+        ...params
+      },
+      attributes: ['uuid', 'userName', 'name'],
+      include: [{
+        model: dbUser_Role,
+        attributes: ['uuid', 'roleUuid', 'userUuid']
+      }]
+    });
+    return result;
+  }
 
   return dbUser;
 };

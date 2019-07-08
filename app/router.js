@@ -34,7 +34,13 @@ module.exports = app => {
   router.post('/uac/auth/updateUserByUuid', uac.auth.updateUserByUuid);
   // 修改用户密码
   router.post('/uac/auth/updateUserPasswordByUuid', uac.auth.updateUserPasswordByUuid);
+  // 获取所有的商家用户
+  // router.post('/uac/auth/queryAllMerchantUser', uac.auth.queryAllMerchantUser)
 
   // 新增门店
-  // router.post('/store/merchant/createMerchant', store.merchant.createMerchant);
+  router.post('/store/merchant/createMerchant', store.merchant.createMerchant);
+  // 门店关联商家
+  router.post('/store/merchant/relevanceUser', store.merchant.relevanceUser);
+  // 编辑门店
+  router.post('/store/merchant/updateMerchant', store.merchant.updateMerchant);
 };

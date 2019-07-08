@@ -203,9 +203,12 @@ class UacController extends Controller {
       })
       this.success('密码修改成功');
     }
-
   }
   
+  // async queryAllMerchantUser() {
+  //   const { ctx, app } = this;
+    
+  // }
   
 }
 

@@ -35,6 +35,10 @@ module.exports = app => {
       type: DATE,
       allowNull: false,
     },
+    owner: {
+      type: STRING(38),
+      unique: true
+    },
     remark: STRING(255),
     address: STRING(255),
     servicePhone: STRING(12),

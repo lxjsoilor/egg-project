@@ -21,6 +21,10 @@ module.exports = app => {
     },
     userType: {
         type: ENUM('admin', 'other')
+    },
+    storeUuid: {
+      type: STRING(38),
+      unique: true
     }
   };
 };
