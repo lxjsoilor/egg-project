@@ -39,9 +39,8 @@ module.exports = {
     };
   },
   // modify所需的一些公共字段
-  getModifyInfo(version, modifyId, modifyName) {
+  getModifyInfo(modifyId, modifyName) {
     return {
-      version: version + 1,
       lastModifierId: modifyId || 'system',
       lastModifierName: modifyName || 'system',
     };

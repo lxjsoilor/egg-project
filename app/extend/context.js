@@ -45,7 +45,7 @@ module.exports = {
       app.jwt.verify(token, app.config.jwt.secret, (err, decoded) => {
         if (err) {
           if (err.name === 'TokenExpiredError' && userUuid) {
-            this.setToken({ name, userUuid, userName, userType, orgUuid }); // 刷新token
+            this.setToken({ name, userUuid, userName, userType }); // 刷新token
             resolve({ verify: true, message: { userUuid } });
           } else {
             resolve({ verify: false, message: err.message });

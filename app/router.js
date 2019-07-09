@@ -43,4 +43,22 @@ module.exports = app => {
   router.post('/store/merchant/relevanceUser', store.merchant.relevanceUser);
   // 编辑门店
   router.post('/store/merchant/updateMerchant', store.merchant.updateMerchant);
+
+  // 门店新增商品分类
+  router.post('/store/goodscategory/createGoodscategory', store.goodscategory.createGoodscategory);
+  // 删除商品分类
+  router.post('/store/goodscategory/delGoodscategory', store.goodscategory.delGoodscategory);
+  // 更新商品分类
+  router.post('/store/goodscategory/updateGoodscategory', store.goodscategory.updateGoodscategory);
+  // 获取商品分类列表
+  router.post('/store/goodscategory/getGoodscategoryList', store.goodscategory.getGoodscategoryList);
+  
+  // 新增商品
+  router.post('/store/goods/createGoods', store.goods.createGoods);
+  // 删除商品
+  router.post('/store/goods/delGoods', store.goods.delGoods);
+  // 分页获取商品
+  router.post('/store/goods/queryGoodsByCondition', store.goods.queryGoodsByCondition);
+  // 根据分类获取商品
+  router.post('/store/goods/queryGoodsByCategory', store.goods.queryGoodsByCategory);
 };
