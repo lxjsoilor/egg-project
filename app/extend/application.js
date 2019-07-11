@@ -43,6 +43,7 @@ module.exports = {
     return {
       lastModifierId: modifyId || 'system',
       lastModifierName: modifyName || 'system',
+      lastModifiedTime: new Date()
     };
   },
 

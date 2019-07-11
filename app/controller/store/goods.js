@@ -48,8 +48,20 @@ class GoodsController extends Controller {
     const result = await ctx.service.store.goods.queryGoodsByCategory({
       ownerUuid
     });
-    return result;
-  }
+    this.success(result);
+  };
+
+  async updateGoods() {
+    const { ctx, app } = this;
+    const { uuid } = ctx.request.body;
+    if(app._.isEmpty(uuid)) {
+      this.fail('uuid不能为空')
+    }else {
+      await ctx.service.store.goods.updateGoods(ctx.request.body);
+      this.success('修改成功')      
+    }
+  };
+
 }
 
 module.exports = GoodsController;

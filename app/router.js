@@ -61,4 +61,16 @@ module.exports = app => {
   router.post('/store/goods/queryGoodsByCondition', store.goods.queryGoodsByCondition);
   // 根据分类获取商品
   router.post('/store/goods/queryGoodsByCategory', store.goods.queryGoodsByCategory);
+  // 更新商品
+  router.post('/store/goods/updateGoods', store.goods.updateGoods);
+
+  // 加入购物车
+  router.post('/store/goodscart/createGoodscart', store.goodscart.createGoodscart);
+  // 选择或者取消购物车商品
+  router.post('/store/goodscart/checkGoodscart', store.goodscart.checkGoodscart);
+  // 获取购物车列表
+  router.post('/store/goodscart/getGoodscart', store.goodscart.getGoodscart);
+
+  // 创建订单
+  
 };

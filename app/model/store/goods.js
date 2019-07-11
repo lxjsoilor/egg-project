@@ -13,6 +13,7 @@ module.exports = app => {
     freezeTableName: true,
   });
   // dbGoodscategory.hasMany(dbGoods, { sourceKey: 'categoryUuid'});
+  dbGoodscategory.hasMany(dbGoods, { foreignKey: 'categoryUuid' })   
 
 
   dbGoods.createGoods = async params => {
@@ -38,6 +39,33 @@ module.exports = app => {
     }
     const result = await dbGoods.findAndCountAll(condition);
     result.pages = Math.ceil(result.count/pageSize || 0);
+    return result;
+  }
+
+  dbGoods.queryGoodsByCategory = async params => {
+    const { ownerUuid, categoryAttributes, goodsAttributes } = params;
+    const result = await dbGoodscategory.findAll({
+      attributes: categoryAttributes,
+      where: { ownerUuid },
+      include: [{
+        model: dbGoods,
+        attributes: goodsAttributes
+      }]
+    })
+    return result;
+  }
+
+  dbGoods.updateGoods = async params => {
+    const { ownerUuid, uuid, unitName, name, standard, material, packaging, expirationDate, spec, goodsInfo, salePrice, modifyInfo } = params;
+    const result = await dbGoods.update({
+      unitName, name, standard, material, packaging, expirationDate, spec, goodsInfo, salePrice, ...modifyInfo
+    }, {
+      where: {
+        ownerUuid,
+        uuid
+      }
+    });
+    app.checkUpdate(result);
     return result;
   }
 

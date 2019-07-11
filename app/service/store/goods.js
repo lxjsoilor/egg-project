@@ -49,12 +49,22 @@ class GoodsService extends Service {
   };
 
   async queryGoodsByCategory(params = {}) {
-    // const { app } = this;
-    // const result = await app.model.Goods.queryGoodsByCategory({
-    //   ownerUuid,
-    //   categoryAttributes: ['name'],
-    //   goodsAttributes: ['uuid', 'name', 'categoryUuid', '', '']
-    // })
+    const { app } = this;
+    const { ownerUuid } = params;
+    const result = await app.model.Store.Goods.queryGoodsByCategory({
+      ownerUuid,
+      categoryAttributes: ['name'],
+      goodsAttributes: ['uuid', 'name', 'categoryUuid', 'unitName', 'salePrice']
+    });
+    return result;
+  };
+
+  async updateGoods(params = {}) {
+    const { app } = this;
+    const { uuid, unitName, name, standard, material, packaging, expirationDate, spec, goodsInfo, presentUserUuid, presentUserName, salePrice } = params;
+    const modifyInfo = app.getModifyInfo(presentUserUuid, presentUserName);
+    const result = await app.model.Store.Goods.updateGoods({ uuid, ownerUuid: presentUserUuid, unitName, name, standard, material, packaging, expirationDate, spec, goodsInfo, salePrice, modifyInfo });
+    return result;
   }
 
 }
