@@ -6,6 +6,13 @@ module.exports = app => {
     timestamps: false,
     freezeTableName: true,
   });
+  const dbGoodsSchema = require('../../schema/dbGoods')(app);
+  const dbGoods = db.defineModel(app, 'dbGoods', dbGoodsSchema, {
+    timestamps: false,
+    freezeTableName: true,
+  });
+
+  dbGoodscart.belongsTo(dbGoods, { foreignKey: 'goodsUuid' });
   
   dbGoodscart.delCart = async params => {
     return await dbGoodscart.destroy({
@@ -36,9 +43,18 @@ module.exports = app => {
   dbGoodscart.getGoodscart = async params => {
     let { ownerUuid, merchantUuid } = params;
     return await dbGoodscart.findAll({
-      where: { ownerUuid, merchantUuid }
+      where: {
+        ownerUuid,
+        merchantUuid
+      },
+      attributes: ['uuid', 'goodsNum', 'isChecked', 'ownerUuid'],
+      include: [{
+        model: dbGoods,
+        attributes: ['uuid', 'name', 'categoryName', 'unitName', 'salePrice', 'standard']
+      }]
     })
   }
+
 
   return dbGoodscart;
 };

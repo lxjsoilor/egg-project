@@ -71,6 +71,15 @@ module.exports = app => {
   // 获取购物车列表
   router.post('/store/goodscart/getGoodscart', store.goodscart.getGoodscart);
 
-  // 创建订单
-  
+  // 新建收货地址
+  router.post('/uac/address/createAddree', uac.address.createAddree);
+  // 获取当前用户的地址
+  router.post('/uac/address/queryAllAddress', uac.address.queryAllAddress);
+  // 删除当前地址
+  router.post('/uac/address/delAddress', uac.address.delAddress);
+  // 修改地址
+  router.post('/uac/address/updateAddress', uac.address.updateAddress);
+  // 设置默认地址
+  router.post('/uac/address/setDefaultAddress', uac.address.setDefaultAddress);
+
 };
