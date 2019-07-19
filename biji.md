@@ -27,3 +27,5 @@
 * 关闭nginx：
 * nginx -s stop :快速停止nginx
 * quit ：完整有序的停止nginx
+
+redis启动 redis-server.exe redis.windows.conf

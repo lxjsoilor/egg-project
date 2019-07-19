@@ -8,7 +8,7 @@
 module.exports = app => {
   const { router, controller } = app;
   // const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType } = controller;
-  const { helloworld, uac, store } = controller;
+  const { helloworld, uac, store, utils, order } = controller;
   
   router.post('/helloworld/test', helloworld.test);
 
@@ -82,4 +82,12 @@ module.exports = app => {
   // 设置默认地址
   router.post('/uac/address/setDefaultAddress', uac.address.setDefaultAddress);
 
+  // 用户下单
+  router.post('/order/goodsOrder/createOrder', order.goodsOrder.createOrder);
+  // 取消订单
+  router.post('/order/goodsOrder/cancelOrder', order.goodsOrder.cancelOrder);
+
+  // 图片上传
+  router.post('/utils/upload', utils.upload.upload);
+  
 };
