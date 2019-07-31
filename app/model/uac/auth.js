@@ -16,7 +16,7 @@ module.exports = app => {
   });
 
   // 关系
-  dbUser.hasMany(dbUser_Role, { foreignKey: 'userUuid' })   
+  dbUser.hasMany(dbUser_Role, { foreignKey: 'userUuid' })
   /**
    * 新增商品
    * @param {object} goods - 条件

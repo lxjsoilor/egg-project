@@ -18,7 +18,20 @@ class goodsOrderController extends Controller {
   };
 
   async cancelOrder() {
-    this.success('fdsf');
+    const { ctx } = this;
+    // this.success('fdsf');
+    const { presentUserUuid: ownerUuid, uuid, presentUserName } = ctx.request.body;
+    await ctx.service.order.goodsOrder.cancelOrder({
+      ownerUuid, uuid, presentUserName
+    })
+    this.success('取消订单成功');
+  };
+
+  async queryOrderByCondition() {
+    const { ctx } = this;
+    const result = await ctx.service.order.goodsOrder.query(ctx.request.body);
+    this.success(result)
+
   }
   
 }

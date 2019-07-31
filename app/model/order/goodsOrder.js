@@ -4,6 +4,7 @@ const md5 = require('md5');
 module.exports = app => {
   const dbGoodsOrderSchema = require('../../schema/dbGoodsOrder')(app);
   const dbGoodsOrderlinesSchema = require('../../schema/dbGoodsOrderlines')(app);
+  const merchantSchema = require('../../schema/merchant')(app);
   const dbGoodsOrderlines = db.defineModel(app, 'dbGoodsOrderlines', dbGoodsOrderlinesSchema, {
     timestamps: false,
     freezeTableName: true,
@@ -12,10 +13,15 @@ module.exports = app => {
     timestamps: false,
     freezeTableName: true,
   });
-  // dbGoodsOrder.hasMany(dbGoods, { sourceKey: 'categoryUuid'});
-  // dbGoodsOrder.hasMany(dbGoods, { foreignKey: 'categoryUuid' })   
-
-
+  const dbMerchant = db.defineModel(app, 'merchant', merchantSchema, {
+    timestamps: false,
+    freezeTableName: true,
+  });
+  // dbUser.hasMany(dbUser_Role, { foreignKey: 'userUuid' })
+  // 关系
+  // dbMerchant.hasMany(dbGoodsOrder, { foreignKey: 'merchantUuid' })
+  dbGoodsOrder.hasMany(dbGoodsOrderlines, { foreignKey: 'goodsOrderUuid' })
+  
   dbGoodsOrder.createOrder = async params => {
     const { ownerUuid, merchantUuid, crateInfo, address, linkPhone, linkMan } = params;
     const transaction = await app.transition();
@@ -38,6 +44,7 @@ module.exports = app => {
         address, linkPhone, linkMan, merchantUuid, ownerUuid, totalAmount, goodsTotalQty, status: 'initial',
         ...crateInfo
       }, { transaction })
+      console.log(cartResult);
       cartResult.forEach(item => {
         goodsOrderLines.push({
           ownerUuid,
@@ -45,8 +52,8 @@ module.exports = app => {
           goodsUuid: item.dbGood.uuid,
           name: item.dbGood.name,
           salePrice: parseFloat(item.dbGood.salePrice),
-          goodsName: item.goodsNum,
-          goodsName: item.goodsNum,
+          goodsName: item.goodsName,
+          goodsNum: item.dbGood.goodsNum,
           goodsOrderUuid: goodsOrderResult.uuid,
           ...crateInfo
         })
@@ -60,6 +67,65 @@ module.exports = app => {
       // console.log(goodsOrderResult, 1010);
       return goodsOrderResult.uuid
     }
+  };
+
+  dbGoodsOrder.updateGoodsOrder = async params => {
+    const { fieldChange, condition } = params;
+    const result = await dbGoodsOrder.update({
+      ...fieldChange
+    }, {
+        where: condition
+      })
+    app.checkUpdate(result);
+  };
+
+  dbGoodsOrder.query = async params => {
+    const { attributes, filter = {}, sort = [], page, pageSize: limit, presentUserUuid: ownerUuid } = params;
+    // const { page, pageSize: limit } = pagination;
+    // const { keywordsLike, daterange, status } = filter;
+    // const order = app.getSortInfo(sort);
+    const condition = {
+      offset: (page - 1) * limit,
+      limit,
+      // order,
+      attributes,
+      where: { ownerUuid },
+      include: [{
+        model: dbGoodsOrderlines,
+        attributes: ['goodsName', 'salePrice', 'unitName', 'goodsUuid', 'goodsOrderUuid']
+      }]
+    };
+
+    // if (openId) {
+    //   condition.where.customerUuid = openId;
+    // }
+
+    // if (status) {
+    //   condition.where.status = status;
+    // }
+
+    // if (keywordsLike) {
+    //   condition.where.$or = [
+    //     { billNumber: { $like: `%%${keywordsLike}%%` } },
+    //     { customerName: { $like: `%%${keywordsLike}%%` } },
+    //   ];
+    // }
+
+    // if (!app._.isEmpty(daterange)) {
+    //   const startDate = new Date(daterange[0]);
+    //   const endDate = new Date(daterange[1]);
+
+    //   if (app._.isDate(startDate) && app._.isDate(endDate)) {
+    //     condition.where.createdTime = {
+    //       $gt: startDate,
+    //       $lt: endDate,
+    //     };
+    //   }
+    // }
+
+    const { count, rows } = await dbGoodsOrder.findAndCountAll(condition);
+
+    return { page, count, rows };
   }
 
   return dbGoodsOrder;

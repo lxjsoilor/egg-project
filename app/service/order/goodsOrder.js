@@ -18,6 +18,37 @@ class GoodsService extends Service {
     })
   };
 
+  async cancelOrder(params = {}) {
+    const { app } = this;
+    const { ownerUuid, uuid, presentUserName } = params;
+    const modifyInfo = app.getModifyInfo(ownerUuid, presentUserName);
+
+    await app.model.Order.GoodsOrder.updateGoodsOrder({
+      fieldChange: {
+        status: 'canceled',
+        ...modifyInfo
+      },
+      condition: {
+        ownerUuid, uuid
+      }
+    })
+  };
+
+  async query(params = {}) {
+    const { app } = this;
+    const { Sequelize } = app;
+    return await app.model.Order.GoodsOrder.query({
+      ...params,
+      attributes: [
+        'createdTime', 'uuid', 'status', 'linkMan', 'linkPhone', 'goodsTotalQty', 'deliveryTimeTypeSurcharge',
+        [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
+        [Sequelize.fn('ROUND', Sequelize.col('freightAmount'), 2), 'freightAmount'],
+        [Sequelize.fn('ROUND', Sequelize.col('totalAmount'), 2), 'totalAmount'],
+        [Sequelize.fn('ROUND', Sequelize.col('reductionAmount'), 2), 'reductionAmount'],
+      ],
+    });
+  }
+
 }
 
 module.exports = GoodsService;

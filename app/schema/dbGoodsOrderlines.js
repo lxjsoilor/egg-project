@@ -22,6 +22,10 @@ module.exports = app => {
       type: STRING(76),
       allowNull: false,
     },
+    goodsNum: {
+      type: BIGINT,
+      allowNull: false
+    },
     goodsUuid: {
       type: STRING(38),
       allowNull: false,
