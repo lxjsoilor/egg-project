@@ -88,6 +88,16 @@ module.exports = app => {
   router.post('/order/goodsOrder/cancelOrder', order.goodsOrder.cancelOrder);
   // 分页获取用户订单
   router.post('/order/goodsOrder/queryOrderByCondition', order.goodsOrder.queryOrderByCondition)
+  // 接单
+  router.post('/order/goodsOrder/auditedOrder', order.goodsOrder.auditedOrder)
+  // 配送
+  router.post('/order/goodsOrder/dispatchingOrder', order.goodsOrder.dispatchingOrder)
+  // 已完成
+  router.post('/order/goodsOrder/completedOrder', order.goodsOrder.completedOrder)
+  // 自动取消
+  router.post('/order/goodsOrder/autocanceledOrder', order.goodsOrder.autocanceledOrder)
+
+  
 
   // 图片上传
   router.post('/utils/upload', utils.upload.upload);

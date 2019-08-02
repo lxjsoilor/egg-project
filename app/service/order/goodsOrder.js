@@ -34,6 +34,70 @@ class GoodsService extends Service {
     })
   };
 
+  async auditedOrder(params = {}) {
+    const { app } = this;
+    const { ownerUuid, uuid, presentUserName } = params;
+    const modifyInfo = app.getModifyInfo(ownerUuid, presentUserName);
+
+    await app.model.Order.GoodsOrder.updateGoodsOrder({
+      fieldChange: {
+        status: 'audited',
+        ...modifyInfo
+      },
+      condition: {
+        ownerUuid, uuid
+      }
+    })
+  };
+
+  async dispatchingOrder(params = {}) {
+    const { app } = this;
+    const { ownerUuid, uuid, presentUserName } = params;
+    const modifyInfo = app.getModifyInfo(ownerUuid, presentUserName);
+
+    await app.model.Order.GoodsOrder.updateGoodsOrder({
+      fieldChange: {
+        status: 'dispatching',
+        ...modifyInfo
+      },
+      condition: {
+        ownerUuid, uuid
+      }
+    })
+  };
+
+  async completedOrder(params = {}) {
+    const { app } = this;
+    const { ownerUuid, uuid, presentUserName } = params;
+    const modifyInfo = app.getModifyInfo(ownerUuid, presentUserName);
+
+    await app.model.Order.GoodsOrder.updateGoodsOrder({
+      fieldChange: {
+        status: 'completed',
+        ...modifyInfo
+      },
+      condition: {
+        ownerUuid, uuid
+      }
+    })
+  };
+
+  async autocanceledOrder(params = {}) {
+    const { app } = this;
+    const { ownerUuid, uuid, presentUserName } = params;
+    const modifyInfo = app.getModifyInfo(ownerUuid, presentUserName);
+
+    await app.model.Order.GoodsOrder.updateGoodsOrder({
+      fieldChange: {
+        status: 'autocanceled',
+        ...modifyInfo
+      },
+      condition: {
+        ownerUuid, uuid
+      }
+    })
+  };
+
   async query(params = {}) {
     const { app } = this;
     const { Sequelize } = app;
