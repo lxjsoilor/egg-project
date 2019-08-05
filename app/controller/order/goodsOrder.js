@@ -70,6 +70,14 @@ class goodsOrderController extends Controller {
     this.success('自动取消订单');
   };
   
+  async getOrderDetails() {
+    const { ctx } = this;
+    const { presentUserUuid: ownerUuid, uuid } = ctx.request.body;
+    const result = await ctx.service.order.getOrderDetails({
+      ownerUuid, uuid
+    });
+    this.success(result);
+  }
 }
 
 module.exports = goodsOrderController;

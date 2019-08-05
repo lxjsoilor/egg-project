@@ -12,6 +12,7 @@
     "egg-scripts": "^2.11.0",
     "egg-sequelize": "^4.3.1",
     "egg-session-redis": "^2.1.0",
+    "egg-socket.io": "^4.0.7",
     "egg-validate": "^2.0.2",
     "fecha": "^3.0.3",
     "lodash": "^4.17.11",
@@ -19,7 +20,8 @@
     "mysql2": "^1.6.5",
     "passport-local": "^1.0.0",
     "stream-to-array": "^2.3.0",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "ws": "^7.1.1"
   },
   "devDependencies": {
     "autod": "^3.1.0",
@@ -36,10 +38,10 @@
     "node": ">=8.9.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-app-server",
-    "stop": "egg-scripts stop --title=egg-server-app-server",
-    "dev": "egg-bin dev",
-    "debug": "egg-bin debug",
+    "start": "egg-scripts start --daemon --title=egg-server-app-server --sticky",
+    "stop": "egg-scripts stop --title=egg-server-app-server --sticky",
+    "dev": "egg-bin dev --sticky",
+    "debug": "egg-bin debug --sticky",
     "test": "npm run lint -- --fix && npm run test-local",
     "test-local": "egg-bin test",
     "cov": "egg-bin cov",

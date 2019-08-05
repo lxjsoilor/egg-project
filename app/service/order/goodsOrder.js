@@ -111,6 +111,12 @@ class GoodsService extends Service {
         [Sequelize.fn('ROUND', Sequelize.col('reductionAmount'), 2), 'reductionAmount'],
       ],
     });
+  };
+
+  async getOrderDetails(params = {}) {
+    const { app } = this;
+    const { uuid } = params;
+    return app.model.Order.GoodsOrder.getOrderDetails({ uuid });
   }
 
 }

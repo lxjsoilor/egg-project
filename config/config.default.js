@@ -76,12 +76,35 @@ module.exports = appInfo => {
     agent: true, 
   };
 
-  exports.sessionRedis = {
+  config.sessionRedis = {
     name: 'session', // specific instance `session` as the session store
   };
 
+  config.io = {
+    init: {
+      wsEngine: 'ws',
+    }, // passed to engine.io
+    namespace: {
+      '/': {
+        connectionMiddleware: [
+          'auth',
+        ],
+        packetMiddleware: [],
+      },
+      '/example': {
+        connectionMiddleware: [],
+        packetMiddleware: [],
+      },
+    },
+
+    redis: {
+      host: '127.0.0.1',
+      port: 6379,
+    },
+  }
+
   // jwt
-  exports.jwt = {
+  config.jwt = {
     secret: '123456',
     // ignore: '/weapp',
   };
@@ -92,7 +115,7 @@ module.exports = appInfo => {
   // };
 
   // 中间件
-  config.middleware = ['auth', 'errorHandler'];
+  // config.middleware = ['auth', 'errorHandler'];
 
   return config;
 };
